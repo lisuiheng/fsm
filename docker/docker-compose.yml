@@ -1,130 +1,137 @@
 version: '3'
 services:
-  weed-master1:
-    image: chrislusf/seaweedfs
-    ports:
-      - 9331:9331
-    restart: always
-    command: "master -defaultReplication=000 -port=9331"
-  weed-master2:
-    image: chrislusf/seaweedfs
-    ports:
-      - 9332:9332
-    restart: always
-    command: "master -defaultReplication=010 -port=9332"
-  weed-master3:
-    image: chrislusf/seaweedfs
-    ports:
-      - 9333:9333
-    restart: always
-    command: "master -defaultReplication=110 -port=9333"
-  weed-volume1:
-    image: chrislusf/seaweedfs
-    ports:
-      - 8081:8081
-    links:
-      - weed-master1
+  redis:
+    image: redis
     volumes:
-      - ./data/weed/s1/v1:/data
-    restart: always
-    command: 'volume  -mserver="weed-master1:9331" -port=8081'
-    depends_on:
-     - weed-master1
-  weed-volume2-dc1-rack1:
-    image: chrislusf/seaweedfs
+    - ./data/redis/data:/data
+    - ./data/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
     ports:
-      - 8082:8082
-    links:
-      - weed-master2
-    volumes:
-      - ./data/weed/s1/v2:/data
+    - 6379:6379
     restart: always
-    command: 'volume -mserver="weed-master2:9332" -port=8082 -dataCenter=dc1 -rack=rack1'
-    depends_on:
-     - weed-master2
-  weed-volume2-dc1-rack2:
-    image: chrislusf/seaweedfs
-    ports:
-      - 8083:8083
-    links:
-      - weed-master2
-    volumes:
-      - ./data/weed/s2/v2:/data
-    restart: always
-    command: 'volume -mserver="weed-master2:9332" -port=8082 -dataCenter=dc1 -rack=rack2'
-    depends_on:
-     - weed-master2
-  weed-volume3-dc1-rack1:
-    image: chrislusf/seaweedfs
-    ports:
-      - 8084:8084
-    links:
-      - weed-master3
-    volumes:
-      - ./data/weed/s1/v3:/data
-    restart: always
-    command: 'volume -mserver="weed-master3:9333" -port=8084 -dataCenter=dc1 -rack=rack1'
-    depends_on:
-     - weed-master3
-  weed-volume3-dc1-rack2:
-    image: chrislusf/seaweedfs
-    ports:
-      - 8085:8085
-    links:
-      - weed-master3
-    volumes:
-      - ./data/weed/s2/v3:/data
-    restart: always
-    command: 'volume -mserver="weed-master3:9333" -port=8085 -dataCenter=dc1 -rack=rack2'
-    depends_on:
-     - weed-master3
-  weed-volume3-dc2-rack1:
-    image: chrislusf/seaweedfs
-    ports:
-      - 8086:8086
-    links:
-      - weed-master3
-    volumes:
-      - ./data/weed/s3/v3:/data
-    restart: always
-    command: 'volume -mserver="weed-master3:9333" -port=8086 -dataCenter=dc2 -rack=rack1'
-    depends_on:
-     - weed-master3
-  weed-filer1:
-    image: chrislusf/seaweedfs
-    ports:
-      - 8881:8881
-    links:
-      - weed-master1
-    restart: always
-    command: 'filer -defaultReplicaPlacement=000 -master="weed-master1:9331" -port=8881'
-    depends_on:
-      - weed-master1
-      - weed-volume1
-  weed-filer2:
-    image: chrislusf/seaweedfs
-    ports:
-      - 8882:8882
-    links:
-      - weed-master2
-    restart: always
-    command: 'filer -defaultReplicaPlacement=010 -master="weed-master2:9332" -port=8882'
-    depends_on:
-      - weed-master2
-      - weed-volume2-dc1-rack1
-      - weed-volume2-dc1-rack2
-  weed-filer3:
-    image: chrislusf/seaweedfs
-    ports:
-      - 8883:8883
-    links:
-      - weed-master3
-    restart: always
-    command: 'filer -defaultReplicaPlacement=110 -master="weed-master3:9333" -port=8883'
-    depends_on:
-      - weed-master3
-      - weed-volume3-dc1-rack1
-      - weed-volume3-dc1-rack2
-      - weed-volume3-dc2-rack1
-volumes:
-  ms-sqlserver-data:
+    command: /bin/bash -c "redis-server  /usr/local/etc/redis/redis.conf"
+#  weed-master1:
+#    image: chrislusf/seaweedfs
+#    ports:
+#      - 9331:9331
+#    restart: always
+#    command: "master -defaultReplication=000 -port=9331"
+#  weed-master2:
+#    image: chrislusf/seaweedfs
+#    ports:
+#      - 9332:9332
+#    restart: always
+#    command: "master -defaultReplication=010 -port=9332"
+#  weed-master3:
+#    image: chrislusf/seaweedfs
+#    ports:
+#      - 9333:9333
+#    restart: always
+#    command: "master -defaultReplication=110 -port=9333"
+#  weed-volume1:
+#    image: chrislusf/seaweedfs
+#    ports:
+#      - 8081:8081
+#    links:
+#      - weed-master1
+#    volumes:
+#      - ./data/weed/s1/v1:/data
+#    restart: always
+#    command: 'volume  -mserver="weed-master1:9331" -port=8081'
+#    depends_on:
+#     - weed-master1
+#  weed-volume2-dc1-rack1:
+#    image: chrislusf/seaweedfs
+#    ports:
+#      - 8082:8082
+#    links:
+#      - weed-master2
+#    volumes:
+#      - ./data/weed/s1/v2:/data
+#    restart: always
+#    command: 'volume -mserver="weed-master2:9332" -port=8082 -dataCenter=dc1 -rack=rack1'
+#    depends_on:
+#     - weed-master2
+#  weed-volume2-dc1-rack2:
+#    image: chrislusf/seaweedfs
+#    ports:
+#      - 8083:8083
+#    links:
+#      - weed-master2
+#    volumes:
+#      - ./data/weed/s2/v2:/data
+#    restart: always
+#    command: 'volume -mserver="weed-master2:9332" -port=8082 -dataCenter=dc1 -rack=rack2'
+#    depends_on:
+#     - weed-master2
+#  weed-volume3-dc1-rack1:
+#    image: chrislusf/seaweedfs
+#    ports:
+#      - 8084:8084
+#    links:
+#      - weed-master3
+#    volumes:
+#      - ./data/weed/s1/v3:/data
+#    restart: always
+#    command: 'volume -mserver="weed-master3:9333" -port=8084 -dataCenter=dc1 -rack=rack1'
+#    depends_on:
+#     - weed-master3
+#  weed-volume3-dc1-rack2:
+#    image: chrislusf/seaweedfs
+#    ports:
+#      - 8085:8085
+#    links:
+#      - weed-master3
+#    volumes:
+#      - ./data/weed/s2/v3:/data
+#    restart: always
+#    command: 'volume -mserver="weed-master3:9333" -port=8085 -dataCenter=dc1 -rack=rack2'
+#    depends_on:
+#     - weed-master3
+#  weed-volume3-dc2-rack1:
+#    image: chrislusf/seaweedfs
+#    ports:
+#      - 8086:8086
+#    links:
+#      - weed-master3
+#    volumes:
+#      - ./data/weed/s3/v3:/data
+#    restart: always
+#    command: 'volume -mserver="weed-master3:9333" -port=8086 -dataCenter=dc2 -rack=rack1'
+#    depends_on:
+#     - weed-master3
+#  weed-filer1:
+#    image: chrislusf/seaweedfs
+#    ports:
+#      - 8881:8881
+#    links:
+#      - weed-master1
+#    restart: always
+#    command: 'filer -defaultReplicaPlacement=000 -master="weed-master1:9331" -port=8881'
+#    depends_on:
+#      - weed-master1
+#      - weed-volume1
+#  weed-filer2:
+#    image: chrislusf/seaweedfs
+#    ports:
+#      - 8882:8882
+#    links:
+#      - weed-master2
+#    restart: always
+#    command: 'filer -defaultReplicaPlacement=010 -master="weed-master2:9332" -port=8882'
+#    depends_on:
+#      - weed-master2
+#      - weed-volume2-dc1-rack1
+#      - weed-volume2-dc1-rack2
+#  weed-filer3:
+#    image: chrislusf/seaweedfs
+#    ports:
+#      - 8883:8883
+#    links:
+#      - weed-master3
+#    restart: always
+#    command: 'filer -defaultReplicaPlacement=110 -master="weed-master3:9333" -port=8883'
+#    depends_on:
+#      - weed-master3
+#      - weed-volume3-dc1-rack1
+#      - weed-volume3-dc1-rack2
+#      - weed-volume3-dc2-rack1
