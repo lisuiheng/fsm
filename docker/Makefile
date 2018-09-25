@@ -1,3 +1,5 @@
 .PHONY: clean
-clean: ## remove build artifacts
-	sudo rm -rf data/weed/*
+clean-weed:
+	sudo rm -rf data/weed/s*
+clean-redis:
+	sudo rm -rf data/redis/data
