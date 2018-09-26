@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
+	"sync"
 
 	"github.com/jessevdk/go-flags"
 	"github.com/lisuiheng/fsm/server"
@@ -39,6 +40,7 @@ func main() {
 	}
 
 	ctx := context.Background()
+	var g errgroup.WaitGroup
 	if err := srv.Serve(ctx); err != nil {
 		log.Fatalln(err)
 	}
