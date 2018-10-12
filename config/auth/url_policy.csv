@@ -1,0 +1,45 @@
+p, serversALL, /api/servers, GET, allow
+p, serversONE, /api/servers/*, GET, allow
+p, serversPOST, /api/servers/*, POST, allow
+p, serversPUT, /api/servers/*, PUT, allow
+p, serversDELETE, /api/servers/*, DELETE, allow
+
+p, usersALL, /api/users, GET, allow
+p, usersONE, /api/users/*, GET, allow
+p, usersPOST, /api/users/*, POST, allow
+p, usersPUT, /api/users/*, PUT, allow
+p, usersDELETE, /api/users/*, DELETE, allow
+
+p, roomsALL, /api/rooms, GET, allow
+p, roomsONE, /api/rooms/*, GET, allow
+p, roomsPOST, /api/rooms/*, POST, allow
+p, roomsPUT, /api/rooms/*, PUT, allow
+p, roomsDELETE, /api/rooms/*, DELETE, allow
+
+p, modulesALL, /api/modules, GET, allow
+p, memorysALL, /api/memorys/*, GET, allow
+p, cpusALL, /api/cpus/*, GET, allow
+p, driversALL, /api/drivers, GET, allow
+
+g, admin, serversALL
+g, admin, serversONE
+g, admin, serversPOST
+g, admin, serversPUT
+g, admin, serversDELETE
+g, admin, usersALL
+g, admin, usersONE
+g, admin, usersPOST
+g, admin, usersPUT
+g, admin, usersDELETE
+g, admin, roomsALL
+g, admin, roomsONE
+g, admin, roomsPOST
+g, admin, roomsPUT
+g, admin, roomsDELETE
+g, admin, modulesALL
+g, admin, memorysALL
+g, admin, cpusALL
+g, admin, driversALL
+
+
+

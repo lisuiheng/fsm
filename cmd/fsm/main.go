@@ -2,12 +2,10 @@ package main
 
 import (
 	"context"
-	"log"
-	"os"
-	"sync"
-
 	"github.com/jessevdk/go-flags"
 	"github.com/lisuiheng/fsm/server"
+	"log"
+	"os"
 )
 
 // Build flags
@@ -31,6 +29,7 @@ func main() {
 				code = 0
 			}
 		}
+		log.Fatalln(err)
 		os.Exit(code)
 	}
 
@@ -40,7 +39,6 @@ func main() {
 	}
 
 	ctx := context.Background()
-	var g errgroup.WaitGroup
 	if err := srv.Serve(ctx); err != nil {
 		log.Fatalln(err)
 	}

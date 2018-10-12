@@ -1,0 +1,11 @@
+syntax = "proto3";
+package internal;
+
+message User {
+    string ID = 1; // ID is the unique ID of the source
+    string Name = 2;
+    string Username = 3;
+    string Password = 4;
+    int64 Role = 5;
+}
+

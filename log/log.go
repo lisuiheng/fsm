@@ -76,6 +76,30 @@ func (ll *zapLogger) Panic(args ...interface{}) {
 	ll.l.Panic(args...)
 }
 
+func (ll *zapLogger) Debugf(template string, args ...interface{}) {
+	ll.l.Debugf(template, args...)
+}
+
+func (ll *zapLogger) Infof(template string, args ...interface{}) {
+	ll.l.Infof(template, args...)
+}
+
+func (ll *zapLogger) Warnf(template string, args ...interface{}) {
+	ll.l.Warnf(template, args...)
+}
+
+func (ll *zapLogger) Errorf(template string, args ...interface{}) {
+	ll.l.Errorf(template, args...)
+}
+
+func (ll *zapLogger) Fatalf(template string, args ...interface{}) {
+	ll.l.Fatalf(template, args...)
+}
+
+func (ll *zapLogger) Panicf(template string, args ...interface{}) {
+	ll.l.Panicf(template, args...)
+}
+
 // New wraps a logrus Logger
 func New(level Level) fsm.Logger {
 	logger, _ := zap.Config{
